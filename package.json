@@ -1,0 +1,19 @@
+{
+  "name": "esmp-feature-switcher",
+  "version": "1.0.0",
+  "description": "Chrome extension for managing ESMP feature flags",
+  "scripts": {
+    "build": "npm run clean && npm run build:ts && npm run copy:static",
+    "build:ts": "esbuild src/popup/popup.ts --bundle --outfile=dist/popup/popup.js --target=chrome100 && esbuild src/background.ts --bundle --outfile=dist/background.js --target=chrome100",
+    "copy:static": "cp manifest.json dist/ && cp src/popup/popup.html dist/popup/ && cp src/popup/popup.css dist/popup/ && cp -r icons dist/",
+    "clean": "rm -rf dist && mkdir -p dist/popup",
+    "watch": "npm run clean && npm run copy:static && esbuild src/popup/popup.ts --bundle --outfile=dist/popup/popup.js --target=chrome100 --watch"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "esbuild": "^0.21.5",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
