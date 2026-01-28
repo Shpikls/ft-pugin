@@ -1,4 +1,4 @@
-import { Feature, STORAGE_KEY, TFeatures } from '../types';
+import { STORAGE_KEY, TFeatures } from '../types';
 
 interface PageState {
   hasSwitcher: boolean;
@@ -112,7 +112,7 @@ function renderDisabledState(container: HTMLElement, tabId: number): void {
 function renderEnabledState(container: HTMLElement, tabId: number, flags: TFeatures, hasApi: boolean): void {
   setHeader('Switcher', false);
 
-  const featureKeys = Object.values(Feature);
+  const featureKeys = Object.keys(flags);
 
   const featuresHtml = featureKeys
     .map((feature) => {
