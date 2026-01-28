@@ -1,6 +1,6 @@
 {
   "name": "esmp-feature-switcher",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Chrome extension for managing ESMP feature flags",
   "scripts": {
     "build": "npm run clean && npm run build:ts && npm run copy:static",
