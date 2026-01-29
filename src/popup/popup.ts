@@ -14,6 +14,7 @@ async function getCurrentTab(): Promise<chrome.tabs.Tab | null> {
 async function getPageState(tabId: number): Promise<PageState> {
   const results = await chrome.scripting.executeScript({
     target: { tabId },
+    world: 'MAIN',
     func: (storageKey: string) => {
       const hasSwitcher = !!window.featureSwitcher;
 
@@ -27,7 +28,7 @@ async function getPageState(tabId: number): Promise<PageState> {
 
       return {
         hasSwitcher,
-        flags: hasSwitcher ? window.featureSwitcher?.Flags || null : null,
+        flags: hasSwitcher && window.featureSwitcher?.flags ? { ...window.featureSwitcher.flags } : null,
         localStorageFlags,
       };
     },
@@ -56,6 +57,7 @@ async function toggleFeature(tabId: number, feature: string, enabled: boolean, h
   if (hasApi) {
     await chrome.scripting.executeScript({
       target: { tabId },
+      world: 'MAIN',
       func: (feat: string, val: boolean) => {
         if (window.featureSwitcher) {
           window.featureSwitcher.setEnabled(feat as any, val, true);
@@ -112,7 +114,11 @@ function renderDisabledState(container: HTMLElement, tabId: number): void {
 function renderEnabledState(container: HTMLElement, tabId: number, flags: TFeatures, hasApi: boolean): void {
   setHeader('Switcher', false);
 
-  const featureKeys = Object.keys(flags);
+  const featureKeys = Object.keys(flags).sort((a, b) => {
+    if (a === 'switcher') return -1;
+    if (b === 'switcher') return 1;
+    return a.localeCompare(b);
+  });
 
   const featuresHtml = featureKeys
     .map((feature) => {

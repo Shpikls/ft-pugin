@@ -26,7 +26,7 @@ async function checkAndUpdateIcon(tabId: number): Promise<void> {
       target: { tabId },
       func: (storageKey: string) => {
         // Check window.featureSwitcher
-        if (window.featureSwitcher?.Flags?.switcher) {
+        if (window.featureSwitcher?.flags?.switcher) {
           return true;
         }
         // Check localStorage

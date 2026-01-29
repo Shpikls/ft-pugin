@@ -1,12 +1,5 @@
-// Feature flags enum - mirrors frontend-esmp FeatureSwitcher
-export enum Feature {
-  switcher = 'switcher',
-  collabora = 'collabora',
-  drawio = 'drawio',
-  tiptap = 'tiptap',
-}
-
-export type TFeatures = Record<keyof typeof Feature, boolean>;
+// Feature flags - dynamic object from window.featureSwitcher.flags
+export type TFeatures = Record<string, boolean>;
 
 export const STORAGE_KEY = 'features';
 
@@ -14,9 +7,8 @@ export const STORAGE_KEY = 'features';
 declare global {
   interface Window {
     featureSwitcher?: {
-      Flags: TFeatures;
-      setEnabled: (feature: Feature, enabled: boolean, reload?: boolean) => void;
+      flags: TFeatures;
+      setEnabled: (feature: string, enabled: boolean, reload?: boolean) => void;
     };
-    features?: typeof Feature;
   }
 }
